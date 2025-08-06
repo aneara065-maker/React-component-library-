@@ -1,0 +1,105 @@
+// src/components/Button.js
+import React from 'react';
+
+const Button = ({ label, onClick, variant = 'primary' }) => {
+  const styles = {
+    primary: 'bg-blue-500 hover:bg-blue-700 text-white',
+    secondary: 'bg-gray-500 hover:bg-gray-700 text-white',
+    success: 'bg-green-500 hover:bg-green-700 text-white',
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      className={`px-4 py-2 rounded transition duration-300 ease-in-out shadow-md ${styles[variant]}`}
+    >
+      {label}
+    </button>
+  );
+};
+
+export default Button;
+
+// src/components/Card.js
+import React from 'react';
+
+const Card = ({ title, description, image }) => {
+  return (
+    <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white">
+      <img className="w-full h-48 object-cover" src={image} alt={title} />
+      <div className="px-6 py-4">
+        <div className="font-bold text-xl mb-2 text-blue-600">{title}</div>
+        <p className="text-gray-700 text-base">{description}</p>
+      </div>
+    </div>
+  );
+};
+
+export default Card;
+
+// src/components/Modal.js
+import React from 'react';
+
+const Modal = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div className="absolute inset-0 bg-black opacity-50" onClick={onClose}></div>
+      <div className="bg-white p-6 rounded-lg z-10 shadow-xl max-w-md w-full">
+        {children}
+        <div className="text-right mt-4">
+          <button onClick={onClose} className="text-red-500 hover:text-red-700 font-bold">Close</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Modal;
+
+// src/App.js
+import React, { useState } from 'react';
+import Button from './components/Button';
+import Card from './components/Card';
+import Modal from './components/Modal';
+
+function App() {
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  return (
+    <div className="p-10 space-y-10 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold text-center text-blue-700">React Component Library Demo</h1>
+
+      <div className="flex space-x-4 justify-center">
+        <Button label="Primary" variant="primary" onClick={() => alert('Primary clicked')} />
+        <Button label="Secondary" variant="secondary" onClick={() => alert('Secondary clicked')} />
+        <Button label="Success" variant="success" onClick={() => setModalOpen(true)} />
+      </div>
+
+      <div className="flex justify-center">
+        <Card
+          title="Beautiful Card"
+          description="This is a colorful card component made using Tailwind CSS."
+          image="https://source.unsplash.com/400x300/?nature"
+        />
+      </div>
+
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <h2 className="text-xl font-bold text-blue-600">This is a Modal</h2>
+        <p className="text-gray-700">Click outside or the close button to dismiss.</p>
+      </Modal>
+    </div>
+  );
+}
+
+export default App;
+
+// tailwind.config.js
+module.exports = {
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}; 
